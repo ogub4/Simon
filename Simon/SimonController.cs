@@ -41,6 +41,7 @@ namespace Simon
             this.items.Add(getRandomItem());
             this.items.Add(getRandomItem());
             this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
         }
     }
 }
