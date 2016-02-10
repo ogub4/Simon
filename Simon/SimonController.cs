@@ -15,7 +15,7 @@ namespace Simon
         public SimonController(ViewController view)
         {
             this.rnd = new Random();
-
+            this.items = new List<int>();
             this.view = view;
         
         }
