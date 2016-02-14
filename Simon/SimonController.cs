@@ -5,10 +5,11 @@ using System.Threading;
 
 namespace Simon
 {
+    public enum SimonItems { Up = 0, Down = 1, Left = 2, Right = 3 };
+
     class SimonController
     {
         private ViewController view;
-        enum SimonItems { Up = 0, Down = 1, Left = 2, Right = 3 };
         private List<int> items;
         private Random rnd;
             
@@ -42,6 +43,26 @@ namespace Simon
             this.items.Add(getRandomItem());
             this.items.Add(getRandomItem());
             this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+            this.items.Add(getRandomItem());
+
+            foreach (SimonItems item in this.items)
+            {
+
+                view.InvokeOnMainThread(() => {
+                    view.activateButton(item, true);
+                });
+                Thread.Sleep(3000);
+                view.InvokeOnMainThread(() => {
+                    view.activateButton(item, false);
+                });
+            }
         }
     }
 }

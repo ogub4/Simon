@@ -7,11 +7,26 @@ namespace Simon
 {
     partial class LightButton : UIButton
     {
+        private UIColor color;
+
         public LightButton(IntPtr handle) : base(handle)
         {
             this.BackgroundColor = UIColor.LightGray;
-            this.Layer.BorderWidth = 1;
+            this.Layer.BorderWidth = 0;
             this.TitleLabel.Text = "";
+        }
+
+        public UIColor Color
+        {
+            get
+            {
+                return color;
+            }
+
+            set
+            {
+                color = value;
+            }
         }
 
         public void doDisable()
@@ -24,9 +39,14 @@ namespace Simon
             this.Enabled = true;
         }
 
-        public void doLight()
+        public void doLightOn()
         {
-            this.BackgroundColor = UIColor.Red;
+            this.BackgroundColor = this.color;
+        }
+
+        public void doLightOff()
+        {
+            this.BackgroundColor = UIColor.LightGray;
         }
     }
 }

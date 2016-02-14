@@ -111,6 +111,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Entitlements.plist" />
+    <BundleResource Include="Sounds\pianoC.mp3" />
+    <Content Include="Sounds\pianoD.mp3" />
+    <Content Include="Sounds\pianoE.mp3" />
+    <Content Include="Sounds\pianoF.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
