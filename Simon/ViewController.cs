@@ -70,28 +70,28 @@ namespace Simon
             buttons.Add(btnRight);
         }
 
-        public void activateButton(SimonItems item, bool activateFlag)
+        public void activateButton(SimonItemsType item, bool activateFlag)
         {
             LightButton button;
             NSUrl url;
             switch (item)
             {
-                case SimonItems.Up:
+                case SimonItemsType.Up:
                     button = btnUp;
                     url = NSUrl.FromFilename("Sounds/pianoC.mp3");
                     break;
 
-                case SimonItems.Down:
+                case SimonItemsType.Down:
                     button = btnDown;
                     url = NSUrl.FromFilename("Sounds/pianoD.mp3");
                     break;
 
-                case SimonItems.Right:
+                case SimonItemsType.Right:
                     button = btnRight;
                     url = NSUrl.FromFilename("Sounds/pianoE.mp3");
                     break;
 
-                case SimonItems.Left:
+                case SimonItemsType.Left:
                     button = btnLeft;
                     url = NSUrl.FromFilename("Sounds/pianoF.mp3");
                     break;

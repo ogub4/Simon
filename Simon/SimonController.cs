@@ -5,63 +5,70 @@ using System.Threading;
 
 namespace Simon
 {
-    public enum SimonItems { Up = 0, Down = 1, Left = 2, Right = 3 };
+    public enum SimonItemsType { Up = 0, Down = 1, Left = 2, Right = 3 };
 
     class SimonController
     {
         private ViewController view;
-        private List<int> items;
         private Random rnd;
+        private int level;
+        private int score;
             
         public SimonController(ViewController view)
         {
             this.rnd = new Random();
-            this.items = new List<int>();
             this.view = view;
-        
+            this.level = 0;
+            this.score = 0;
         }
 
 
 
         public void main()
         {
-            view.InvokeOnMainThread(() => {
-                view.switchScreenComputerTurn();
-            });
-
             doGame();
         }
 
-        private int getRandomItem()
+        private SimonItemsType getRandomItem()
         {
-            return rnd.Next(4);
+            return (SimonItemsType) rnd.Next(4);
         }
 
         private void doGame()
         {
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
-            this.items.Add(getRandomItem());
+            // initialize
+            List<SimonItemsType> items = new List<SimonItemsType>();
+            this.level = 0;
+            this.score = 0;
+            items.Clear();
 
-            foreach (SimonItems item in this.items)
+            // ゲームオーバーになるまでループ
+            for (;this.level <= 10;)
             {
+                this.level++;
+                items.Add(getRandomItem());
 
+                // Computer's turn
                 view.InvokeOnMainThread(() => {
-                    view.activateButton(item, true);
+                    view.switchScreenComputerTurn();
                 });
-                Thread.Sleep(3000);
+
+                foreach (SimonItemsType item in items)
+                {
+                    view.InvokeOnMainThread(() => {
+                        view.activateButton(item, true);
+                    });
+                    Thread.Sleep(3000);
+                    view.InvokeOnMainThread(() => {
+                        view.activateButton(item, false);
+                    });
+                }
+
+                // Player's turn
                 view.InvokeOnMainThread(() => {
-                    view.activateButton(item, false);
+                    view.switchScreenPlayerTurn();
                 });
+                Thread.Sleep(10000);
             }
         }
     }
