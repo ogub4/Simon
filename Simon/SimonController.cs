@@ -59,17 +59,27 @@ namespace Simon
                         view.activateButton(item, true);
                     });
                     Thread.Sleep(3000);
+#if false
                     view.InvokeOnMainThread(() => {
                         view.activateButton(item, false);
                     });
+#endif
                 }
 
                 // Player's turn
                 view.InvokeOnMainThread(() => {
                     view.switchScreenPlayerTurn();
                 });
+
+                view.OnButtonDownEvent += OnButtonDownHandle;
+                
                 Thread.Sleep(10000);
             }
+        }
+
+        private void OnButtonDownHandle(object sender, OnButtonEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

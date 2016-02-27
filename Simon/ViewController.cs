@@ -8,10 +8,22 @@ using AudioToolbox;
 
 namespace Simon
 {
+    public class OnButtonEventArgs :EventArgs
+    {
+        public SimonItemsType item;
+        public OnButtonEventArgs(SimonItemsType item)
+        {
+            this.item = item;
+        }
+    }
+
     public partial class ViewController : UIViewController
     {
         private SimonController controller;
         private List<LightButton> buttons;
+
+        public delegate void OnButtonDown(object sender, OnButtonEventArgs e);
+        public event OnButtonDown OnButtonDownEvent;
 
         public ViewController(IntPtr handle) : base(handle)
         {
@@ -59,10 +71,10 @@ namespace Simon
         private void initControl()
         {
             labelStatus.Text = "";
-            btnUp.Color = UIColor.Blue;
-            btnDown.Color = UIColor.Green;
-            btnRight.Color = UIColor.Yellow;
-            btnLeft.Color = UIColor.Red;
+            btnUp.init(UIColor.Blue, new NSUrl("Sounds/pianoC.mp3"));
+            btnDown.init(UIColor.Green, new NSUrl("Sounds/pianoD.mp3"));
+            btnRight.init(UIColor.Yellow, new NSUrl("Sounds/pianoE.mp3"));
+            btnLeft.init(UIColor.Red, new NSUrl("Sounds/pianoF.mp3"));
 
             buttons.Add(btnUp);
             buttons.Add(btnDown);
@@ -73,44 +85,45 @@ namespace Simon
         public void activateButton(SimonItemsType item, bool activateFlag)
         {
             LightButton button;
-            NSUrl url;
             switch (item)
             {
                 case SimonItemsType.Up:
                     button = btnUp;
-                    url = NSUrl.FromFilename("Sounds/pianoC.mp3");
                     break;
 
                 case SimonItemsType.Down:
                     button = btnDown;
-                    url = NSUrl.FromFilename("Sounds/pianoD.mp3");
                     break;
 
                 case SimonItemsType.Right:
                     button = btnRight;
-                    url = NSUrl.FromFilename("Sounds/pianoE.mp3");
                     break;
 
                 case SimonItemsType.Left:
                     button = btnLeft;
-                    url = NSUrl.FromFilename("Sounds/pianoF.mp3");
                     break;
                 default:
                     button = btnUp;
-                    url = NSUrl.FromFilename("Sounds/pianoC.mp3");
                     break;
             }
             if (activateFlag)
             {
-                button.doLightOn();
-                SystemSound systemSound = new SystemSound(url);
-                systemSound.PlaySystemSound();
+                button.doPush(3000);
             }
             else
             {
-                button.doLightOff();
+//                button.doLightOff();
             }
+        }
 
+        partial void OnUpButtonDown(Simon.LightButton sender)
+        {
+            sender.doLightOn();
+
+            if (OnButtonDownEvent != null)
+            {
+                OnButtonDownEvent(this, new OnButtonEventArgs(SimonItemsType.Up));
+            }
         }
     }
 }

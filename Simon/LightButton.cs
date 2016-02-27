@@ -2,12 +2,16 @@ using Foundation;
 using System;
 using System.CodeDom.Compiler;
 using UIKit;
+using AudioToolbox;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Simon
 {
     partial class LightButton : UIButton
     {
         private UIColor color;
+        private NSUrl soundFile;
 
         public LightButton(IntPtr handle) : base(handle)
         {
@@ -16,17 +20,10 @@ namespace Simon
             this.TitleLabel.Text = "";
         }
 
-        public UIColor Color
+        public void init(UIColor color, NSUrl soundFile)
         {
-            get
-            {
-                return color;
-            }
-
-            set
-            {
-                color = value;
-            }
+            this.color = color;
+            this.soundFile = soundFile;
         }
 
         public void doDisable()
@@ -47,6 +44,15 @@ namespace Simon
         public void doLightOff()
         {
             this.BackgroundColor = UIColor.LightGray;
+        }
+
+        public async void doPush(int term)
+        {
+            doLightOn();
+            SystemSound systemSound = new SystemSound(this.soundFile);
+            systemSound.PlaySystemSound();
+            await Task.Delay(term);
+            doLightOff();
         }
     }
 }

@@ -34,6 +34,10 @@ namespace Simon
 		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel labelStatus { get; set; }
 
+		[Action ("OnUpButtonDown:")]
+		[GeneratedCode ("iOS Designer", "1.0")]
+		partial void OnUpButtonDown (Simon.LightButton sender);
+
 		void ReleaseDesignerOutlets ()
 		{
 			if (btnDown != null) {
