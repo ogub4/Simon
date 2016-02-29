@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Simon
 {
-    public enum SimonItemsType { Up = 0, Down = 1, Left = 2, Right = 3 };
+    public enum SimonItemsType { Up = 0, Down = 1, Left = 2, Right = 3, None = 99 };
 
     class SimonController
     {
@@ -13,6 +14,8 @@ namespace Simon
         private Random rnd;
         private int level;
         private int score;
+        private SimonItemsType inputItem;
+        private ManualResetEventSlim evInput;
             
         public SimonController(ViewController view)
         {
@@ -20,9 +23,11 @@ namespace Simon
             this.view = view;
             this.level = 0;
             this.score = 0;
+            this.inputItem = SimonItemsType.None;
+            this.evInput = new ManualResetEventSlim(false);
+
+            view.OnButtonDownEvent += OnButtonDownHandle;
         }
-
-
 
         public void main()
         {
@@ -71,15 +76,28 @@ namespace Simon
                     view.switchScreenPlayerTurn();
                 });
 
-                view.OnButtonDownEvent += OnButtonDownHandle;
-                
+                foreach (SimonItemsType item in items)
+                {
+                    getInputItem();
+                }
+
                 Thread.Sleep(10000);
             }
         }
 
+        private async void getInputItem()
+        {
+            evInput.Reset();
+            this.inputItem = SimonItemsType.None;
+            await Task.Run(() => {
+                evInput.Wait(10000);
+            });
+        }
+
         private void OnButtonDownHandle(object sender, OnButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            this.inputItem = e.item;
+            this.evInput.Set();
         }
     }
 }

@@ -118,12 +118,33 @@ namespace Simon
 
         partial void OnUpButtonDown(Simon.LightButton sender)
         {
-            sender.doLightOn();
+            NoticeButtonDown(sender, SimonItemsType.Up);
+        }
+
+        partial void OnLeftButtonDown(Simon.LightButton sender)
+        {
+            NoticeButtonDown(sender, SimonItemsType.Left);
+        }
+
+        partial void OnRightButtonDown(Simon.LightButton sender)
+        {
+            NoticeButtonDown(sender, SimonItemsType.Right);
+        }
+
+        partial void OnDownButtonDown(Simon.LightButton sender)
+        {
+            NoticeButtonDown(sender, SimonItemsType.Down);
+        }
+
+        private void NoticeButtonDown(Simon.LightButton sender, SimonItemsType item)
+        {
+            sender.doPush(1000);
 
             if (OnButtonDownEvent != null)
             {
-                OnButtonDownEvent(this, new OnButtonEventArgs(SimonItemsType.Up));
+                OnButtonDownEvent(this, new OnButtonEventArgs(item));
             }
+
         }
     }
 }
