@@ -12,12 +12,14 @@ namespace Simon
     {
         private UIColor color;
         private NSUrl soundFile;
+        private CancellationTokenSource cancelTokenSource;
 
         public LightButton(IntPtr handle) : base(handle)
         {
             this.BackgroundColor = UIColor.LightGray;
             this.Layer.BorderWidth = 0;
             this.TitleLabel.Text = "";
+            this.cancelTokenSource = null;
         }
 
         public void init(UIColor color, NSUrl soundFile)
@@ -48,10 +50,26 @@ namespace Simon
 
         public async void doPush(int term)
         {
+            if (this.cancelTokenSource != null)
+            {
+                this.cancelTokenSource.Cancel();
+            }
             doLightOn();
             SystemSound systemSound = new SystemSound(this.soundFile);
             systemSound.PlaySystemSound();
-            await Task.Delay(term);
+
+            this.cancelTokenSource = new CancellationTokenSource();
+
+            try 
+            {
+                await Task.Delay(term, cancelTokenSource.Token);
+            }
+            catch (OperationCanceledException ex)
+            {
+
+            }
+
+
             doLightOff();
         }
     }

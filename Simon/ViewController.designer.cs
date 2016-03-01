@@ -32,6 +32,10 @@ namespace Simon
 
 		[Outlet]
 		[GeneratedCode ("iOS Designer", "1.0")]
+		UILabel labelLevel { get; set; }
+
+		[Outlet]
+		[GeneratedCode ("iOS Designer", "1.0")]
 		UILabel labelStatus { get; set; }
 
 		[Action ("OnDownButtonDown:")]
@@ -67,6 +71,10 @@ namespace Simon
 			if (btnUp != null) {
 				btnUp.Dispose ();
 				btnUp = null;
+			}
+			if (labelLevel != null) {
+				labelLevel.Dispose ();
+				labelLevel = null;
 			}
 			if (labelStatus != null) {
 				labelStatus.Dispose ();

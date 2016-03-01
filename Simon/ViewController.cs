@@ -146,5 +146,10 @@ namespace Simon
             }
 
         }
+
+        public void setLevel(int level)
+        {
+            this.labelLevel.Text = string.Format("{0}", level);
+        }
     }
 }

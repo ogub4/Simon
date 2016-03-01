@@ -51,6 +51,11 @@ namespace Simon
             for (;this.level <= 10;)
             {
                 this.level++;
+
+                view.InvokeOnMainThread(() =>
+                {
+                    view.setLevel(level);
+                });
                 items.Add(getRandomItem());
 
                 // Computer's turn
@@ -64,11 +69,6 @@ namespace Simon
                         view.activateButton(item, true);
                     });
                     Thread.Sleep(3000);
-#if false
-                    view.InvokeOnMainThread(() => {
-                        view.activateButton(item, false);
-                    });
-#endif
                 }
 
                 // Player's turn
